@@ -304,10 +304,12 @@
           </systemProperties>
         </configuration>
       </plugin>
-      <plugin>
+      <!--
+       Error during document generation: Error parsing /Users/wangyc/MyCodes/hehe/mybatis-3-master/target/pdf/site.tmp/xdoc/getting-started.xml: Error parsing the model: only whitespace content allowed before start tag and not \ufeff ...
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pdf-plugin</artifactId>
       </plugin>
+      -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>

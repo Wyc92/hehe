@@ -54,6 +54,18 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.11</version>
         </dependency>
-    </dependencies>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>2.0.6-SNAPSHOT-learn</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
+        <!--无法访问org.springframework.dao.support.DaoSupport TODO 不知道为啥找不到还需要手动写-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>5.2.7.RELEASE</version>
+        </dependency>
 
+    </dependencies>
 </project>
