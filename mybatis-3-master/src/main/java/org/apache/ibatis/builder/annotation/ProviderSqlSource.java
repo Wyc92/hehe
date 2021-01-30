@@ -201,6 +201,12 @@ public class ProviderSqlSource implements SqlSource {
     return args;
   }
 
+  /**
+   * 执行provider获得sql
+   * @param args
+   * @return
+   * @throws Exception
+   */
   private String invokeProviderMethod(Object... args) throws Exception {
     Object targetObject = null;
     if (!Modifier.isStatic(providerMethod.getModifiers())) {

@@ -33,7 +33,7 @@ public class BaseProvider {
     }
 
     public String deleteByPrimaryKey(Object key,ProviderContext context) throws Exception {
-        Class clazz = context.getMapperType();
+        Class clazz = getClassByProviderContext(context);
         Object entity = getEntityByClassAndPrimaryKey(clazz, key);
         return deleteByEntity(entity);
     }
@@ -78,7 +78,7 @@ public class BaseProvider {
      * @throws IllegalAccessException
      */
     public String getByPrimaryKey(Object key, ProviderContext context) throws Exception {
-        Class clazz = context.getMapperType();
+        Class clazz =getClassByProviderContext(context);
         Object entity = getEntityByClassAndPrimaryKey(clazz, key);
         String byEntity = getByEntity(entity);
         return byEntity;
@@ -345,5 +345,12 @@ public class BaseProvider {
             sb.append(matcher.end() == line.length() ? "" : "_");
         }
         return sb.toString();
+    }
+
+    protected Class getClassByProviderContext(ProviderContext providerContext){
+        Class clazz = providerContext.getMapperType().getAnnotation(Entity.class).value();
+        //TODO java: 程序包sun.reflect.generics.reflectiveObjects不存在,所以临时增加了一个注解Entity
+        //Class clazz= (Class) ((ParameterizedTypeImpl) context.getMapperType().getGenericInterfaces()[0]).getActualTypeArguments()[0];
+        return clazz;
     }
 }
