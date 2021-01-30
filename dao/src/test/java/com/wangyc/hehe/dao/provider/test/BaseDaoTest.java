@@ -16,6 +16,7 @@ public class BaseDaoTest extends BaseTest{
     @Test
     public void a(){
         StudentDao.Student byPrimaryKey = studentDao.getByPrimaryKey(1L);
+        System.out.println(byPrimaryKey);
     }
 
 }
