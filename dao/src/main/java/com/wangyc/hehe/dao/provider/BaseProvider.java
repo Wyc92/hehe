@@ -7,7 +7,10 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -348,9 +351,17 @@ public class BaseProvider {
     }
 
     protected Class getClassByProviderContext(ProviderContext providerContext){
-        Class clazz = providerContext.getMapperType().getAnnotation(Entity.class).value();
-        //TODO java: 程序包sun.reflect.generics.reflectiveObjects不存在,所以临时增加了一个注解Entity
-        //Class clazz= (Class) ((ParameterizedTypeImpl) context.getMapperType().getGenericInterfaces()[0]).getActualTypeArguments()[0];
-        return clazz;
+        try {
+            //java: 程序包sun.reflect.generics.reflectiveObjects不存在
+            //clazz= (Class) ((ParameterizedTypeImpl) genericInterface).getActualTypeArguments()[0];
+            Type genericInterface = providerContext.getMapperType().getGenericInterfaces()[0];
+            Method getActualTypeArguments = providerContext.getMapperType().getGenericInterfaces()[0].getClass().getMethod("getActualTypeArguments");
+            Type[] invoke = ((Type[])getActualTypeArguments.invoke(genericInterface));
+            Class clazz = (Class)invoke[0];
+            return clazz;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }
