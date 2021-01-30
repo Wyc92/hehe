@@ -4,6 +4,7 @@ import com.wangyc.hehe.dao.BaseDao;
 import com.wangyc.hehe.dao.annotation.Entity;
 import com.wangyc.hehe.dao.annotation.Primary;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,10 +21,13 @@ public interface StudentDao extends BaseDao<StudentDao.Student,Long> {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-
+    @Builder
     public static class Student{
         @Primary
         private Long id;
         private String username;
+        private String password;
+        private String email;
+        private String gender;
     }
 }
