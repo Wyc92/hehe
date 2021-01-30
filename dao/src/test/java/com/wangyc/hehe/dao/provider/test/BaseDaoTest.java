@@ -74,33 +74,34 @@ public class BaseDaoTest extends BaseTest {
     }
 
 
-    /**
-    //@Test
+    @Test
     public void updateByPrimaryIgnoreNull() {
         //TODO 好像参数只能是一个
         //org.mybatis.spring.MyBatisSystemException: nested exception is org.apache.ibatis.binding.BindingException: Parameter 'id' not found. Available parameters are [arg1, arg0, param1, param2]
         StudentDao.Student byPrimaryKey1 = studentDao.getByPrimaryKey(1L);
-        byPrimaryKey1.setEmail("123qweasd");
-        studentDao.updateByPrimaryIgnoreNull(1L,byPrimaryKey1);
+        byPrimaryKey1.setEmail(null);
+        byPrimaryKey1.setUsername("abc");
+        byPrimaryKey1.setId(1L);
+        studentDao.updateByPrimaryIgnoreNull(byPrimaryKey1);
         StudentDao.Student byPrimaryKey2 = studentDao.getByPrimaryKey(1L);
-        assert "王玉成".equals(byPrimaryKey2.getUsername());
-        assert "123qweasd".equals(byPrimaryKey2.getPassword());
-
+        assert "abc".equals(byPrimaryKey2.getUsername());
+        assert null!=byPrimaryKey2.getEmail();
     }
 
-    //@Test
+    @Test
     public void updateByPrimaryNoIgnoreNull() {
-        //TODO 好像参数只能是一个
-        //org.mybatis.spring.MyBatisSystemException: nested exception is org.apache.ibatis.binding.BindingException: Parameter 'id' not found. Available parameters are [arg1, arg0, param1, param2]
-        StudentDao.Student byPrimaryKey1 = studentDao.getByPrimaryKey(1L);
-        byPrimaryKey1.setEmail("123qweasd");
-        studentDao.updateByPrimaryNoIgnoreNull(1L,byPrimaryKey1);
-        StudentDao.Student byPrimaryKey2 = studentDao.getByPrimaryKey(1L);
-        assert "王玉成".equals(byPrimaryKey2.getUsername());
-        assert "123qweasd".equals(byPrimaryKey2.getPassword());
+     //TODO 好像参数只能是一个
+     //org.mybatis.spring.MyBatisSystemException: nested exception is org.apache.ibatis.binding.BindingException: Parameter 'id' not found. Available parameters are [arg1, arg0, param1, param2]
+     StudentDao.Student byPrimaryKey1 = studentDao.getByPrimaryKey(1L);
+     byPrimaryKey1.setEmail(null);
+     byPrimaryKey1.setId(1L);
+     byPrimaryKey1.setUsername("abc");
+     studentDao.updateByPrimaryNoIgnoreNull(byPrimaryKey1);
+     StudentDao.Student byPrimaryKey2 = studentDao.getByPrimaryKey(1L);
+     assert "abc".equals(byPrimaryKey2.getUsername());
+     assert null==byPrimaryKey2.getEmail();
 
     }
-    **/
     @Test
     public void deleteByPrimaryKey(){
         List<StudentDao.Student> byEntity1 = studentDao.findByEntity(StudentDao.Student.builder().build());

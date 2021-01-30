@@ -31,10 +31,10 @@ public interface BaseDao <M,K>{
     void insertNoIgnoreNull(M m);
 
     @UpdateProvider(type = BaseProvider.class, method = "updateByPrimaryIgnoreNull")
-    void updateByPrimaryIgnoreNull(K k,M m);
+    void updateByPrimaryIgnoreNull(M m);
 
     @UpdateProvider(type = BaseProvider.class, method = "updateByPrimaryNoIgnoreNull")
-    void updateByPrimaryNoIgnoreNull(K k,M m);
+    void updateByPrimaryNoIgnoreNull(M m);
 
     @DeleteProvider(type = BaseProvider.class,method = "deleteByEntity")
     void deleteByEntity(M m);

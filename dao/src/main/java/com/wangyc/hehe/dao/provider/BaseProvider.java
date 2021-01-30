@@ -129,8 +129,8 @@ public class BaseProvider {
      * @return
      * @throws IllegalAccessException
      */
-    public String updateByPrimaryIgnoreNull(Object primary,Object object) throws Exception {
-        return updateByPrimaryActurally(primary, object, true);
+    public String updateByPrimaryIgnoreNull(Object object) throws Exception {
+        return updateByPrimaryActurally(object, true);
     }
 
     /**
@@ -139,27 +139,25 @@ public class BaseProvider {
      * @return
      * @throws IllegalAccessException
      */
-    public String updateByPrimaryNoIgnoreNull(Object primary, Object object) throws Exception {
-        return updateByPrimaryActurally(primary, object, false);
+    public String updateByPrimaryNoIgnoreNull( Object object) throws Exception {
+        return updateByPrimaryActurally(object, false);
     }
 
     /**
      * update
-     * @param primary
      * @param object
      * @param ignore
      * @return
      * @throws Exception
      */
-    protected String updateByPrimaryActurally(Object primary, Object object, Boolean ignore) throws Exception {
-
-
+    protected String updateByPrimaryActurally(Object object, Boolean ignore) throws Exception {
         String updateSQL = getUpdateSQL(object.getClass());
         String setSQL = getSetSQL(object, ignore);
         //给主键设置值只用于where语句中，不用在set中 所以这段需要写在getSetSQL之后
         Field primaryField = getPrimaryField(object.getClass());
         primaryField.setAccessible(true);
-        primaryField.set(object,primary);
+        Object primary = primaryField.get(object);
+
         Object entityByClassAndPrimaryKey = getEntityByClassAndPrimaryKey(object.getClass(), primary);
         String whereSQL = getWhereSQL(entityByClassAndPrimaryKey);
         return updateSQL+" "+setSQL+" "+whereSQL;

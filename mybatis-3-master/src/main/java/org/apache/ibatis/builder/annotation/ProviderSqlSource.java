@@ -178,6 +178,7 @@ public class ProviderSqlSource implements SqlSource {
     return cause;
   }
 
+  //如果两个参数都不包括providerContext，但是SqlSource中有、则将其中一个设置成providerContext
   private Object[] extractProviderMethodArguments(Object parameterObject) {
     if (providerContext != null) {
       Object[] args = new Object[2];
