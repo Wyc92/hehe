@@ -9,6 +9,10 @@ import org.apache.ibatis.annotations.UpdateProvider;
 import java.util.List;
 
 /**
+ * TODO:
+ *  1 更新参数只能是一个的问题
+ *  2 主键策略
+ *  3 insert 自增主键 return的问题
  * Describe: BaseDao
  * Date: 2021/1/28
  * Time: 4:08 下午
