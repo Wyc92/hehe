@@ -241,6 +241,30 @@ public class MapperBuilderAssistant extends BaseBuilder {
     return new Discriminator.Builder(configuration, resultMapping, namespaceDiscriminatorMap).build();
   }
 
+  /**
+   * 这是唯一一个增加MappedStatement的入口
+   * @param id
+   * @param sqlSource
+   * @param statementType
+   * @param sqlCommandType
+   * @param fetchSize
+   * @param timeout
+   * @param parameterMap
+   * @param parameterType
+   * @param resultMap
+   * @param resultType
+   * @param resultSetType
+   * @param flushCache
+   * @param useCache
+   * @param resultOrdered
+   * @param keyGenerator
+   * @param keyProperty
+   * @param keyColumn
+   * @param databaseId
+   * @param lang
+   * @param resultSets
+   * @return
+   */
   public MappedStatement addMappedStatement(
       String id,
       SqlSource sqlSource,
@@ -470,18 +494,4 @@ public class MapperBuilderAssistant extends BaseBuilder {
   public LanguageDriver getLanguageDriver(Class<? extends LanguageDriver> langClass) {
     return configuration.getLanguageDriver(langClass);
   }
-
-  /** Backward compatibility signature. */
-  public MappedStatement addMappedStatement(String id, SqlSource sqlSource, StatementType statementType,
-      SqlCommandType sqlCommandType, Integer fetchSize, Integer timeout, String parameterMap, Class<?> parameterType,
-      String resultMap, Class<?> resultType, ResultSetType resultSetType, boolean flushCache, boolean useCache,
-      boolean resultOrdered, KeyGenerator keyGenerator, String keyProperty, String keyColumn, String databaseId,
-      LanguageDriver lang) {
-    return addMappedStatement(
-      id, sqlSource, statementType, sqlCommandType, fetchSize, timeout,
-      parameterMap, parameterType, resultMap, resultType, resultSetType,
-      flushCache, useCache, resultOrdered, keyGenerator, keyProperty,
-      keyColumn, databaseId, lang, null);
-  }
-
 }

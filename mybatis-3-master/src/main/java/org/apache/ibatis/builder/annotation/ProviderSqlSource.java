@@ -30,6 +30,8 @@ import org.apache.ibatis.scripting.LanguageDriver;
 import org.apache.ibatis.session.Configuration;
 
 /**
+ * 用于描述通过@SelectProvider等注解配置的SQL资源信息
+ * 总是依赖别的sqlSource
  * @author Clinton Begin
  * @author Kazuki Shimizu
  */
@@ -135,6 +137,11 @@ public class ProviderSqlSource implements SqlSource {
   private SqlSource createSqlSource(Object parameterObject) {
     try {
       String sql;
+      /**
+       * 对于 Provider这种配置形式
+       * 如果是大于等于一个参数则是map
+       * TODO 不知道xml配置是不是也是走ProviderSqlsource 还是直接使用RawSqlsource
+       */
       if (parameterObject instanceof Map) {
         int bindParameterCount = providerMethodParameterTypes.length - (providerContext == null ? 0 : 1);
         if (bindParameterCount == 1 &&

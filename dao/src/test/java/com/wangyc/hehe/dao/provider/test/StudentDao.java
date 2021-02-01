@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * Describe: StudentDap
@@ -15,6 +18,8 @@ import lombok.NoArgsConstructor;
  */
 public interface StudentDao extends BaseDao<StudentDao.Student,Long> {
 
+    @Select("select * from student")
+    List<Student> list();
 
     @Data
     @AllArgsConstructor

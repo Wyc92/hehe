@@ -1,9 +1,11 @@
 package com.wangyc.hehe.dao.provider.test;
 
+import com.wangyc.hehe.dao.plugin.MybatisPageInterceptor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -36,6 +38,15 @@ public class BaseTest {
     @Configuration
     @MapperScan(basePackages = "com.wangyc.hehe.dao.provider.test")
     public static class SpringConfig {
+
+        /**
+         * TODO
+         * Plugin 等配置能不能由Spring管理？
+         */
+        @Value("classpath:mybatis-config.xml")
+        private org.springframework.core.io.Resource mybatisConfig; // 注入文件资源
+
+
         @Bean
         public DataSource getDataSource() throws IOException, SQLException {
             return new EmbeddedDatabaseBuilder()
@@ -48,6 +59,7 @@ public class BaseTest {
         public SqlSessionFactoryBean getSqlSessionFactoryBean(DataSource dataSource) {
             SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
             sqlSessionFactoryBean.setDataSource(dataSource);
+            sqlSessionFactoryBean.setConfigLocation(mybatisConfig);
             return sqlSessionFactoryBean;
         }
     }

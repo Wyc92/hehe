@@ -349,6 +349,15 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     DefaultResultContext<Object> resultContext = new DefaultResultContext<>();
     ResultSet resultSet = rsw.getResultSet();
     skipRows(resultSet, rowBounds);
+    /**
+     * resultSet.next() 是获取下一个结果，没获取一个都会打印下面的一行 （debug模式）
+     * <==    Columns: ID, USERNAME, PASSWORD, EMAIL, GENDER
+     * <==        Row: 1, username1, passowrd1, email1, male
+     * <==        Row: 2, username2, passowrd2, email2, male
+     * <==        Row: 3, username3, passowrd3, email3, male
+     * <==        Row: 4, username4, passowrd4, email4, female
+     * <==        Row: 5, username5, passowrd5, email5, female
+     */
     while (shouldProcessMoreRows(resultContext, rowBounds) && !resultSet.isClosed() && resultSet.next()) {
       ResultMap discriminatedResultMap = resolveDiscriminatedResultMap(resultSet, resultMap, null);
       Object rowValue = getRowValue(rsw, discriminatedResultMap, null);
@@ -394,8 +403,11 @@ public class DefaultResultSetHandler implements ResultSetHandler {
 
   private Object getRowValue(ResultSetWrapper rsw, ResultMap resultMap, String columnPrefix) throws SQLException {
     final ResultLoaderMap lazyLoader = new ResultLoaderMap();
+    //生成对象（是根据 方法签名的返回值类型）
     Object rowValue = createResultObject(rsw, resultMap, lazyLoader, columnPrefix);
+    //设置值
     if (rowValue != null && !hasTypeHandlerForResultObject(rsw, resultMap.getType())) {
+      //MetaObject 有点厉害、改了MetaObject 则相当于改了rowValue
       final MetaObject metaObject = configuration.newMetaObject(rowValue);
       boolean foundValues = this.useConstructorMappings;
       if (shouldApplyAutomaticMappings(resultMap, false)) {
@@ -583,7 +595,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
   //
   // INSTANTIATION & CONSTRUCTOR MAPPING
   //
-
+  //TODO 生成对象
   private Object createResultObject(ResultSetWrapper rsw, ResultMap resultMap, ResultLoaderMap lazyLoader, String columnPrefix) throws SQLException {
     this.useConstructorMappings = false; // reset previous mapping result
     final List<Class<?>> constructorArgTypes = new ArrayList<>();

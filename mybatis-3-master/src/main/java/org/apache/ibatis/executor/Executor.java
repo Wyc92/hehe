@@ -28,7 +28,13 @@ import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.transaction.Transaction;
 
 /**
- * @author Clinton Begin
+ * （整个Executor可以增加plugin）
+ * 基本上流程都是
+ * 获得一个StatementHandler和Statement(jdk中的)
+ * StatementHandler执行prepare(此处可以plugin)
+ * 用StatementHandler执行handler方法处理Statement获得结果
+ *  handler方法中会调用resultSetHandler处理结果（可plugin）
+ *
  */
 public interface Executor {
 

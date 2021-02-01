@@ -65,6 +65,7 @@ import org.apache.ibatis.builder.CacheRefResolver;
 import org.apache.ibatis.builder.IncompleteElementException;
 import org.apache.ibatis.builder.MapperBuilderAssistant;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
+import org.apache.ibatis.builder.xml.XMLStatementBuilder;
 import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.executor.keygen.Jdbc3KeyGenerator;
 import org.apache.ibatis.executor.keygen.KeyGenerator;
@@ -125,6 +126,10 @@ public class MapperAnnotationBuilder {
   public void parse() {
     String resource = type.toString();
     if (!configuration.isResourceLoaded(resource)) {
+      /**
+       * 先加载对应的xml文件、会调用到下面这个方法、就是增加Mapperstatement等
+       * @see XMLStatementBuilder#parseStatementNode()
+       */
       loadXmlResource();
       configuration.addLoadedResource(resource);
       assistant.setCurrentNamespace(type.getName());
@@ -135,6 +140,8 @@ public class MapperAnnotationBuilder {
         try {
           // issue #237
           if (!method.isBridge()) {
+            //解析method上配置的@Select @SelectProvider等配置信息
+            //然后增加Mapperstatement等
             parseStatement(method);
           }
         } catch (IncompleteElementException e) {
@@ -464,6 +471,15 @@ public class MapperAnnotationBuilder {
     return returnType;
   }
 
+  /**
+   * 如果是Prover配置 则返回ProviderSqlsource
+   * 如果是select等则是Dynamic或者Raw
+   * TODO 、如果是xml配置呢
+   * @param method
+   * @param parameterType
+   * @param languageDriver
+   * @return
+   */
   private SqlSource getSqlSourceFromAnnotations(Method method, Class<?> parameterType, LanguageDriver languageDriver) {
     try {
       Class<? extends Annotation> sqlAnnotationType = getSqlAnnotationType(method);

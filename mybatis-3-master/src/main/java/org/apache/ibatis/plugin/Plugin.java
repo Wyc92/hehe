@@ -34,12 +34,25 @@ public class Plugin implements InvocationHandler {
   private final Interceptor interceptor;
   private final Map<Class<?>, Set<Method>> signatureMap;
 
+  /**
+   *
+   * @param target 被代理对象
+   * @param interceptor 拦截器
+   * @param signatureMap 方法签名
+   */
   private Plugin(Object target, Interceptor interceptor, Map<Class<?>, Set<Method>> signatureMap) {
     this.target = target;
     this.interceptor = interceptor;
     this.signatureMap = signatureMap;
   }
 
+  /**
+   * 静态方法
+   * 对targer生成代理，增加interceptor的方法
+   * @param target
+   * @param interceptor
+   * @return
+   */
   public static Object wrap(Object target, Interceptor interceptor) {
     Map<Class<?>, Set<Method>> signatureMap = getSignatureMap(interceptor);
     Class<?> type = target.getClass();
@@ -53,6 +66,15 @@ public class Plugin implements InvocationHandler {
     return target;
   }
 
+  /**
+   * 代理方法
+   * Plugin 中存储了原始对象target 和 interceptor等信息
+   * @param proxy
+   * @param method
+   * @param args
+   * @return
+   * @throws Throwable
+   */
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     try {
@@ -66,6 +88,11 @@ public class Plugin implements InvocationHandler {
     }
   }
 
+  /**
+   * 获取interceptor上的方法签名
+   * @param interceptor
+   * @return
+   */
   private static Map<Class<?>, Set<Method>> getSignatureMap(Interceptor interceptor) {
     Intercepts interceptsAnnotation = interceptor.getClass().getAnnotation(Intercepts.class);
     // issue #251
@@ -77,6 +104,7 @@ public class Plugin implements InvocationHandler {
     for (Signature sig : sigs) {
       Set<Method> methods = signatureMap.computeIfAbsent(sig.type(), k -> new HashSet<>());
       try {
+        //只能获取到 public的方法
         Method method = sig.type().getMethod(sig.method(), sig.args());
         methods.add(method);
       } catch (NoSuchMethodException e) {
@@ -86,6 +114,13 @@ public class Plugin implements InvocationHandler {
     return signatureMap;
   }
 
+  /**
+   * 获取type实现的、且在signatureMap中的接口
+   * TODO 需要过滤掉signatureMap中的原因是 在使用的地方强转么？
+   * @param type 被代理的对象
+   * @param signatureMap Interceptor中定义的要被代理的方法签名
+   * @return
+   */
   private static Class<?>[] getAllInterfaces(Class<?> type, Map<Class<?>, Set<Method>> signatureMap) {
     Set<Class<?>> interfaces = new HashSet<>();
     while (type != null) {

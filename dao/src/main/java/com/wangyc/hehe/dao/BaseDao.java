@@ -1,16 +1,13 @@
 package com.wangyc.hehe.dao;
 
 import com.wangyc.hehe.dao.provider.BaseProvider;
-import org.apache.ibatis.annotations.DeleteProvider;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 /**
  * TODO:
- *  1 更新参数只能是一个的问题
+ *  1 更新参数只能是一个的问题(map @Param)
  *  2 主键策略
  *  3 insert 自增主键 return的问题
  * Describe: BaseDao
@@ -21,6 +18,11 @@ import java.util.List;
 public interface BaseDao <M,K>{
     @SelectProvider(type = BaseProvider.class, method = "findByEntity")
     List<M> findByEntity(M m);
+
+    /**
+    @SelectProvider(type = BaseProvider.class, method = "findByEntityWithPage")
+    PageResponse<M> findByEntityWithPage(@Param(Constant.entity) M m, @Param("pageSize") Long pageSize ,@Param("pageNum") Long pageNum);
+     **/
 
     @SelectProvider(type = BaseProvider.class, method = "getByEntity")
     M getByEntity(M m);

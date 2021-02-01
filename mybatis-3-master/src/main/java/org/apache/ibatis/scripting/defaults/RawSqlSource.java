@@ -26,6 +26,8 @@ import org.apache.ibatis.scripting.xmltags.SqlNode;
 import org.apache.ibatis.session.Configuration;
 
 /**
+ * 处理 不含有${}
+ * 用于DynamicSqlSource不同的是，这些SQL语句在解析XML配置的时候就能确定，即不包含动态SQL相关配置
  * Static SqlSource. It is faster than {@link DynamicSqlSource} because mappings are
  * calculated during startup.
  *

@@ -22,8 +22,19 @@ import java.util.Properties;
  */
 public interface Interceptor {
 
+  /**
+   * 需要实现的代理方法
+   * @param invocation
+   * @return
+   * @throws Throwable
+   */
   Object intercept(Invocation invocation) throws Throwable;
 
+  /**
+   * 包转 target ，传递了this
+   * @param target
+   * @return
+   */
   default Object plugin(Object target) {
     return Plugin.wrap(target, this);
   }

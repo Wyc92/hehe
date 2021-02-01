@@ -1,5 +1,6 @@
 package com.wangyc.hehe.dao.provider.test;
 
+import com.wangyc.hehe.dao.PageResponse;
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,6 +46,15 @@ public class BaseDaoTest extends BaseTest {
         assert byEntity3.size() == 1;
         assert byEntity4.size() == 5;
         assert CollectionUtils.isEmpty(byEntity5);
+    }
+
+    //@Test
+    public void findByEntityWithPage() {
+        //List<StudentDao.Student> byEntity = studentDao.findByEntity(StudentDao.Student.builder().id(1L).build());
+        //assert byEntity.size()==1;
+        //TODO
+        //PageResponse<StudentDao.Student> byEntityWithPage = studentDao.findByEntityWithPage(StudentDao.Student.builder().id(1L).build(), 1L,10L);
+        //assert null !=byEntityWithPage;
     }
 
     @Test

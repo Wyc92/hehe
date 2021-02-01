@@ -36,7 +36,15 @@ import org.apache.ibatis.session.Configuration;
 public class BoundSql {
 
   private final String sql;
+  //形参
   private final List<ParameterMapping> parameterMappings;
+  //实参
+  /**
+   * 生成 一二级缓存缓存的时候都和输入的参数有关，这个时候就用到了 根据形参获取实际参数
+   * @see org.apache.ibatis.executor.BaseExecutor.createCacheKey
+   * 大概率后面生成实际的sql的时候也会利用到 TODO
+   *
+   */
   private final Object parameterObject;
   private final Map<String, Object> additionalParameters;
   private final MetaObject metaParameters;

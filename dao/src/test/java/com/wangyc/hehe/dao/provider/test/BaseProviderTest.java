@@ -210,6 +210,30 @@ public class BaseProviderTest {
 
     }
 
+    void findByEntityWithPage() {
+        try {
+            //TODO
+            Method findByEntity = baseProvider.getClass().getDeclaredMethod("findByEntityWithPage", Object.class,Long.class,Long.class);
+            findByEntity.setAccessible(true);
+            String a = (String) findByEntity.invoke(baseProvider, TeaC132cHeerA.builder().build(),1,2);
+            String b = (String) findByEntity.invoke(baseProvider, TeaC132cHeerA.builder().abc(0L).build(),0,1);
+            String c = (String) findByEntity.invoke(baseProvider, TeaC132cHeerA.builder().abc(1L).build(),3,1);
+            String d = (String) findByEntity.invoke(baseProvider, TeaC132cHeerA.builder().abc(1L).abcDefD(null).build(),3,1);
+            String e = (String) findByEntity.invoke(baseProvider, TeaC132cHeerA.builder().abc(1L).abcDefD("sdwd").build(),1,2);
+
+            assert strEqual("select abc_def_d as abcDefD,abc_def_de as AbcDefDe,aaa as abc  from  tea_c132c_heer_a ",a);
+            assert strEqual("select abc_def_d as abcDefD,abc_def_de as AbcDefDe,aaa as abc  from  tea_c132c_heer_a  where aaa = #{abc} ",b);
+            assert strEqual("select abc_def_d as abcDefD,abc_def_de as AbcDefDe,aaa as abc  from  tea_c132c_heer_a  where aaa = #{abc} ",c);
+            assert strEqual("select abc_def_d as abcDefD,abc_def_de as AbcDefDe,aaa as abc  from  tea_c132c_heer_a  where aaa = #{abc} ",d);
+            assert strEqual("select abc_def_d as abcDefD,abc_def_de as AbcDefDe,aaa as abc  from  tea_c132c_heer_a  where abc_def_d = #{abcDefD}  and aaa = #{abc} ",e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assert false;
+        }
+
+    }
+
+
     @Test
     void getByEntity() {
         try {
@@ -406,15 +430,15 @@ public class BaseProviderTest {
     @Test
     void updateByPrimaryActurally() {
         try {
-            Method updateByPrimaryActurally = baseProvider.getClass().getDeclaredMethod("updateByPrimaryActurally", Object.class, Object.class, Boolean.class);
+            Method updateByPrimaryActurally = baseProvider.getClass().getDeclaredMethod("updateByPrimaryActurally", Object.class, Boolean.class);
             updateByPrimaryActurally.setAccessible(true);
-            String a = (String) updateByPrimaryActurally.invoke(baseProvider, 1L, TeaC132cHeerA.builder().build(), true);
-            String b = (String) updateByPrimaryActurally.invoke(baseProvider, 2L, TeaC132cHeerA.builder().AbcDefDe(0L).build(), true);
-            String c = (String) updateByPrimaryActurally.invoke(baseProvider, 3L, TeaC132cHeerA.builder().abc(1L).abcDefD(null).build(), true);
-            String d = (String) updateByPrimaryActurally.invoke(baseProvider, 4L, TeaC132cHeerA.builder().abc(1L).abcDefD("sdwd").build(), false);
+            String a = (String) updateByPrimaryActurally.invoke(baseProvider, TeaC132cHeerA.builder().abc(1L).build(), true);
+            String b = (String) updateByPrimaryActurally.invoke(baseProvider, TeaC132cHeerA.builder().abc(2L).AbcDefDe(0L).build(), true);
+            String c = (String) updateByPrimaryActurally.invoke(baseProvider, TeaC132cHeerA.builder().abc(3L).abcDefD(null).build(), true);
+            String d = (String) updateByPrimaryActurally.invoke(baseProvider, TeaC132cHeerA.builder().abc(4L).abcDefD("sdwd").build(), false);
 
-            assert strEqual("update tea_c132c_heer_a set   where aaa = #{abc} ",a);
-            assert strEqual("update tea_c132c_heer_a set abc_def_de = #{AbcDefDe}   where aaa = #{abc} ",b);
+            assert strEqual("update tea_c132c_heer_a set aaa = #{abc}   where aaa = #{abc} ",a);
+            assert strEqual("update tea_c132c_heer_a set abc_def_de = #{AbcDefDe} ,aaa = #{abc}   where aaa = #{abc} ",b);
             assert strEqual("update tea_c132c_heer_a set aaa = #{abc}   where aaa = #{abc} ",c);
             assert strEqual("update tea_c132c_heer_a set abc_def_d = #{abcDefD} ,abc_def_de = #{AbcDefDe} ,aaa = #{abc}   where aaa = #{abc} ",d);
         } catch (Exception e) {
@@ -425,15 +449,15 @@ public class BaseProviderTest {
     @Test
     void updateByPrimaryIgnoreNull() {
         try {
-            Method updateByPrimaryIgnoreNull = baseProvider.getClass().getDeclaredMethod("updateByPrimaryIgnoreNull", Object.class, Object.class);
+            Method updateByPrimaryIgnoreNull = baseProvider.getClass().getDeclaredMethod("updateByPrimaryIgnoreNull", Object.class);
             updateByPrimaryIgnoreNull.setAccessible(true);
-            String a = (String) updateByPrimaryIgnoreNull.invoke(baseProvider, 1L, TeaC132cHeerA.builder().build());
-            String b = (String) updateByPrimaryIgnoreNull.invoke(baseProvider, 2L, TeaC132cHeerA.builder().AbcDefDe(0L).build());
-            String c = (String) updateByPrimaryIgnoreNull.invoke(baseProvider, 3L, TeaC132cHeerA.builder().abc(1L).abcDefD(null).build());
-            String d = (String) updateByPrimaryIgnoreNull.invoke(baseProvider, 4L, TeaC132cHeerA.builder().abc(1L).abcDefD("sdwd").build());
+            String a = (String) updateByPrimaryIgnoreNull.invoke(baseProvider, TeaC132cHeerA.builder().abc(1L).build());
+            String b = (String) updateByPrimaryIgnoreNull.invoke(baseProvider, TeaC132cHeerA.builder().abc(2L).AbcDefDe(0L).build());
+            String c = (String) updateByPrimaryIgnoreNull.invoke(baseProvider, TeaC132cHeerA.builder().abc(1L).abcDefD(null).build());
+            String d = (String) updateByPrimaryIgnoreNull.invoke(baseProvider, TeaC132cHeerA.builder().abc(1L).abcDefD("sdwd").build());
 
-            assert strEqual("update tea_c132c_heer_a set   where aaa = #{abc} ",a);
-            assert strEqual("update tea_c132c_heer_a set abc_def_de = #{AbcDefDe}   where aaa = #{abc} ",b);
+            assert strEqual("update tea_c132c_heer_a set aaa = #{abc}   where aaa = #{abc} ",a);
+            assert strEqual("update tea_c132c_heer_a set abc_def_de = #{AbcDefDe} ,aaa = #{abc}   where aaa = #{abc} ",b);
             assert strEqual("update tea_c132c_heer_a set aaa = #{abc}   where aaa = #{abc} ",c);
             assert strEqual("update tea_c132c_heer_a set abc_def_d = #{abcDefD} ,aaa = #{abc}   where aaa = #{abc} ",d);
         } catch (Exception e) {
@@ -446,12 +470,12 @@ public class BaseProviderTest {
     @Test
     void updateByPrimaryNoIgnoreNull() {
         try {
-            Method updateByPrimaryNoIgnoreNull = baseProvider.getClass().getDeclaredMethod("updateByPrimaryNoIgnoreNull", Object.class, Object.class);
+            Method updateByPrimaryNoIgnoreNull = baseProvider.getClass().getDeclaredMethod("updateByPrimaryNoIgnoreNull", Object.class);
             updateByPrimaryNoIgnoreNull.setAccessible(true);
-            String a = (String) updateByPrimaryNoIgnoreNull.invoke(baseProvider, 1L, TeaC132cHeerA.builder().build());
-            String b = (String) updateByPrimaryNoIgnoreNull.invoke(baseProvider, 2L, TeaC132cHeerA.builder().AbcDefDe(0L).build());
-            String c = (String) updateByPrimaryNoIgnoreNull.invoke(baseProvider, 3L, TeaC132cHeerA.builder().abc(1L).abcDefD(null).build());
-            String d = (String) updateByPrimaryNoIgnoreNull.invoke(baseProvider, 4L, TeaC132cHeerA.builder().abc(1L).abcDefD("sdwd").build());
+            String a = (String) updateByPrimaryNoIgnoreNull.invoke(baseProvider, TeaC132cHeerA.builder().abc(1L).build());
+            String b = (String) updateByPrimaryNoIgnoreNull.invoke(baseProvider, TeaC132cHeerA.builder().abc(2L).AbcDefDe(0L).build());
+            String c = (String) updateByPrimaryNoIgnoreNull.invoke(baseProvider, TeaC132cHeerA.builder().abc(1L).abcDefD(null).build());
+            String d = (String) updateByPrimaryNoIgnoreNull.invoke(baseProvider, TeaC132cHeerA.builder().abc(1L).abcDefD("sdwd").build());
 
             assert strEqual("update tea_c132c_heer_a set abc_def_d = #{abcDefD} ,abc_def_de = #{AbcDefDe} ,aaa = #{abc}   where aaa = #{abc} ",a);
             assert strEqual("update tea_c132c_heer_a set abc_def_d = #{abcDefD} ,abc_def_de = #{AbcDefDe} ,aaa = #{abc}   where aaa = #{abc} ",b);

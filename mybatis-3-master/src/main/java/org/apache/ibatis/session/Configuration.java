@@ -771,6 +771,13 @@ public class Configuration {
     mapperRegistry.addMappers(packageName);
   }
 
+  /**
+   * @see org.apache.ibatis.builder.xml.XMLConfigBuilder#mapperElement(org.apache.ibatis.parsing.XNode)
+   * @see org.apache.ibatis.builder.xml.XMLMapperBuilder#bindMapperForNamespace()
+   * @see org.mybatis.spring.mapper.MapperFactoryBean#checkDaoConfig() 与spring整合后的入口
+   * @param type
+   * @param <T>
+   */
   public <T> void addMapper(Class<T> type) {
     mapperRegistry.addMapper(type);
   }

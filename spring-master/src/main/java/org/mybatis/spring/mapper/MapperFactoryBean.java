@@ -77,6 +77,7 @@ public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements Factor
     Configuration configuration = getSqlSession().getConfiguration();
     if (this.addToConfig && !configuration.hasMapper(this.mapperInterface)) {
       try {
+        //因为继承了SqlSessionDaoSupport 所以能拿到sqlsession、configuration
         configuration.addMapper(this.mapperInterface);
       } catch (Exception e) {
         logger.error("Error while adding the mapper '" + this.mapperInterface + "' to configuration.", e);
