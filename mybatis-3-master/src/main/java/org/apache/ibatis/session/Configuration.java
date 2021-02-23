@@ -104,6 +104,7 @@ public class Configuration {
 
   protected boolean safeRowBoundsEnabled;
   protected boolean safeResultHandlerEnabled = true;
+  //以知的一个用处是 DefaultResultSetHandler 中根据数据库字段设置实体类的时候用
   protected boolean mapUnderscoreToCamelCase;
   protected boolean aggressiveLazyLoading;
   protected boolean multipleResultSetsEnabled = true;
